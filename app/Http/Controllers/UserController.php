@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Role;
+use App\Models\Department;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
@@ -18,19 +20,23 @@ class UserController extends Controller
 
     public function store(Request $request)
     {   
-        $validator = $request->validate([
-            'name' => 'required|string|max:255',
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'date_of_birth' => 'required|date',
+            'address' => 'required|string|max:500',
+            'phone' => 'required|string|max:20',
+            'age' => 'required|integer|min:0',
+            'department_id' => 'required|exists:departments,id',
+            'role_id' => 'required|exists:roles,id',
         ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $validated['password'] = Hash::make($validated['password']);
         
-        return new UserResource($user);
+        $user = User::create($validated);
+        
+        return $this->userMapped($user);
     }
 
     public function update(Request $request, $id)
@@ -42,9 +48,16 @@ class UserController extends Controller
         }
 
         $validator = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:users,email,'.$id,
+            'first_name' => 'sometimes|required|string|max:255',
+            'last_name' => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|string|email|max:255|unique:users',
             'password' => 'sometimes|required|string|min:8',
+            'role_id' => 'sometimes|required|exists:roles,id',
+            'date_of_birth' => 'sometimes|required|date',
+            'address' => 'sometimes|required|string|max:500',
+            'phone' => 'sometimes|required|string|max:20',
+            'age' => 'sometimes|required|integer|min:0',
+            'department_id' => 'sometimes|required|exists:departments,id',
         ]);
 
         if($request->has('password')){
@@ -54,5 +67,27 @@ class UserController extends Controller
         $user->update($request->all());
 
         return new UserResource($user);
+    }
+
+    public function userMapped($user)
+    {
+        $department = Department::find($user->department_id);
+        $role = Role::find($user->role_id);
+
+        $department = ['id' => $department->id, 'name' => $department->name];
+        $role = ['id' => $role->id, 'name' => $role->name];
+
+        return response()->json([
+            'id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'email' => $user->email,
+            'age' => $user->age,
+            'phone' => $user->phone,
+            'address' => $user->address,
+            'date_of_birth' => $user->date_of_birth,
+            'department' => $department,
+            'role' => $role,
+        ]);
     }
 }

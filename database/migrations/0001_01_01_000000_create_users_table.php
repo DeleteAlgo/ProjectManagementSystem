@@ -13,12 +13,27 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('full_name')->virtualAs("CONCAT(first_name, ' ', last_name)");
             $table->string('email')->unique();
+            $table->integer('age')->nullable();
+            $table->string('phone')->nullable();
+            $table->text('address')->nullable();
+            $table->date('date_of_birth')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('profile_photo_path', 2048)->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->boolean('is_online')->default(false);
+            $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
+            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        Schema::table('departments', function (Blueprint $table) {
+            $table->foreign('manager_id')->references('id')->on('users')->onDelete('set null');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -42,6 +57,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('departments', function (Blueprint $table) {
+            $table->dropForeign(['manager_id']);
+        });
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
