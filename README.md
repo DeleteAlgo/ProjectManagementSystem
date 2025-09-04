@@ -48,7 +48,3 @@ A Trello-like project management application built with Laravel (backend) and Re
 ## Contributing
 
 Pull requests are welcome. For major changes, open an issue first.
-
-## License
-
-MIT
