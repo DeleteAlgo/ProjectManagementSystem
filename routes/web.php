@@ -8,5 +8,9 @@ Route::get('/', function () {
     return Inertia::render('index');
 });
 
+Route::get('/dashboard', function () {
+    return Inertia::render('dashboard');
+});
+
 Route::get('/login', fn() => response()->json(['message' => 'Please login'], 401))
     ->name('login');
