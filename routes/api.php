@@ -1,7 +1,11 @@
 <?php
 use Inertia\Inertia;
 use App\Models\User;
+use App\Models\Department;
+use App\Models\Role;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\http\Controllers\DepartmentController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -19,4 +23,6 @@ Route::prefix('v1')
             Route::post('/users', [UserController::class, 'store']);
             Route::patch('/users/{id}', [UserController::class, 'update']);
             Route::post('/logout/{id}', [AuthController::class, 'logout']);
+            Route::post('/departments', [DepartmentController::class, 'store']);
+            Route::post('/roles', [RoleController::class, 'store']);
 });
