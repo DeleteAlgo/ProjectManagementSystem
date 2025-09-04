@@ -56,11 +56,26 @@ class User extends Authenticatable
 
     public function department()
     {
-        return $this->hasOne(Department::class);
+        return $this->belongsTo(Department::class);
     }
 
     public function role()
     {
-        return $this->hasOne(Role::class);
+        return $this->belongsTo(Role::class);
+    }
+
+    public function boards()
+    {
+        return $this->hasMany(Board::class, 'created_by');
+    }
+
+    public function managedBoards()
+    {
+        return $this->hasMany(Board::class, 'manager_id');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'created_by');
     }
 }
