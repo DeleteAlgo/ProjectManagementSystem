@@ -36,7 +36,7 @@ export default function index() {
                 <label for="email" class="block text-sm/6 font-medium text-white">Email address</label>
                 <div class="mt-2">
                   <input
-                    className="w-full px-3 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                    className="w-full px-3 py-2 border border-white text-white rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
                     type="email"
                     id="email"
                     name="email"
@@ -53,7 +53,7 @@ export default function index() {
                 </div>
                 <div class="mt-2">
                   <input
-                    className="w-full px-3 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                    className="w-full px-3 py-2 border border-white rounded text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
                     type="password"
                     id="password"
                     name="password"
