@@ -20,9 +20,16 @@ Route::prefix('v1')
             });
 
             Route::get('/users', [UserController::class, 'show']);
+            Route::get('/departments', [DepartmentController::class, 'index']);
+            Route::get('/roles', [RoleController::class, 'index']);
+            Route::get('/boards', [BoardController::class, 'index']);
+            Route::get('/checkuser', [AuthController::class, 'checkUser']);
+
             Route::post('/users', [UserController::class, 'store']);
-            Route::patch('/users/{id}', [UserController::class, 'update']);
             Route::post('/logout/{id}', [AuthController::class, 'logout']);
             Route::post('/departments', [DepartmentController::class, 'store']);
             Route::post('/roles', [RoleController::class, 'store']);
+            Route::post('/boards', [BoardController::class, 'makeBoard']);
+
+            Route::patch('/users/{id}', [UserController::class, 'update']);
 });

@@ -8,7 +8,6 @@
     @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     @inertiaHead
-    <script src="http://localhost:8097"></script>
 </head>
 <body class="antialiased">
     @inertia
