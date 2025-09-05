@@ -1,0 +1,66 @@
+// --- Minimal i18n dictionary (no external libs) ---
+export const messages = {
+  en: {
+    header: "Project Management Dashboard",
+    subheader: "Overview of your projects, tasks, and team activity.",
+    statsTitle: "Today's Highlights",
+    projects: "Projects",
+    tasks: "Tasks",
+    due: "Due this week",
+    primaryCta: "Create Project",
+    secondaryCta: "Add Task",
+
+    rightTitle: "Upcoming & Tips",
+    upcoming: "Upcoming",
+    tipTitle: "Quick Tips",
+    tip1: "Use labels to group related tasks.",
+    tip2: "Assign due dates to improve forecasting.",
+    tip3: "Mention teammates with @ to notify them.",
+
+    u1: "Design review for Alpha",
+    u2: "Client call: immigration case",
+    u3: "Sprint planning (Team Frontend)",
+  },
+  tl: {
+    header: "Dashboard ng Pamamahala ng Proyekto",
+    subheader: "Buod ng iyong mga proyekto, gawain, at aktibidad ng koponan.",
+    statsTitle: "Mga Highlight Ngayon",
+    projects: "Mga Proyekto",
+    tasks: "Mga Gawain",
+    due: "Nakatalaga ngayong linggo",
+    primaryCta: "Lumikha ng Proyekto",
+    secondaryCta: "Magdagdag ng Gawain",
+
+    rightTitle: "Paparating at Mga Tip",
+    upcoming: "Paparating",
+    tipTitle: "Mabilis na Mga Tip",
+    tip1: "Gumamit ng labels para pangkatin ang magkakaugnay na gawain.",
+    tip2: "Magtakda ng due dates para mas mahusay ang forecast.",
+    tip3: "Banggitin ang kakampi gamit ang @ para ma-notify sila.",
+
+    u1: "Design review para sa Alpha",
+    u2: "Tawag sa kliyente: kaso sa immigration",
+    u3: "Sprint planning (Team Frontend)",
+  },
+  es: {
+    header: "Panel de Gestión de Proyectos",
+    subheader: "Resumen de tus proyectos, tareas y actividad del equipo.",
+    statsTitle: "Destacados de Hoy",
+    projects: "Proyectos",
+    tasks: "Tareas",
+    due: "Para esta semana",
+    primaryCta: "Crear Proyecto",
+    secondaryCta: "Añadir Tarea",
+
+    rightTitle: "Próximos y Consejos",
+    upcoming: "Próximos",
+    tipTitle: "Consejos Rápidos",
+    tip1: "Usa etiquetas para agrupar tareas relacionadas.",
+    tip2: "Asigna fechas de vencimiento para mejorar la previsión.",
+    tip3: "Menciona a compañeros con @ para avisarles.",
+
+    u1: "Revisión de diseño para Alpha",
+    u2: "Llamada con cliente: caso de inmigración",
+    u3: "Planificación de sprint (Equipo Frontend)",
+  },
+};
