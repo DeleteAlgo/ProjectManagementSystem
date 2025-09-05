@@ -33,7 +33,7 @@ export default function index() {
       localStorage.setItem("token_type", res.data.token_type);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      router.visit('/dashboard');
+      window.location.href = "/";
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }

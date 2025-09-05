@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   HomeIcon,
   UsersIcon,
@@ -98,6 +98,13 @@ function classNames(...classes) {
 
 export default function Layout({ children }) {
   const [lang, setLang] = useState("en");
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    if (!token) {
+      window.location.href = "/";
+    }
+  }, []);
 
   const t = (key) => messages[lang]?.[key] ?? key;
 
