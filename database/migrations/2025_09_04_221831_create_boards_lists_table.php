@@ -25,6 +25,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('boards_lists');
+        // Drop child table constraints and tables first
+        if (Schema::hasTable('board_lists')) {
+            Schema::table('board_lists', function (Blueprint $table) {
+                $table->dropForeign(['board_id']);
+            });
+        }
+        Schema::dropIfExists('board_lists');
     }
 };
