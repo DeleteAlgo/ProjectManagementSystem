@@ -15,6 +15,9 @@ export function ProjectList({ list, onUpdateList, openDropdownId, setOpenDropdow
     id: list.id,
   })
 
+  // const newList = { id, title, cards: [] };
+  // const cardIndex = list.cards.findIndex((card) => card.id === activeCardId);
+  
   const addCard = (title, description) => {
     const newCard = {
       id: Date.now().toString(),
@@ -63,8 +66,11 @@ export function ProjectList({ list, onUpdateList, openDropdownId, setOpenDropdow
         </CardHeader>
 
         <CardContent className="space-y-3" ref={setNodeRef}>
-          <SortableContext items={list.cards.map((card) => card.id)} strategy={verticalListSortingStrategy}>
-            {list.cards.map((card) => (
+          <SortableContext
+            items={(list.cards || []).filter(card => card && card.id).map(card => card.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {(list.cards || []).filter(card => card && card.id).map(card => (
               <ProjectCard key={card.id} card={card} />
             ))}
           </SortableContext>

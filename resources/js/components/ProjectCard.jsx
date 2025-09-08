@@ -53,7 +53,7 @@ export function ProjectCard({ card, isDragging = false }) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-7 w-12 flex-shrink-0 ml-2"
+                className="h-7 w-11 flex-shrink-0 ml-2"
               >
                 <MoreHorizontal className="h-3 w-3" />
               </Button>

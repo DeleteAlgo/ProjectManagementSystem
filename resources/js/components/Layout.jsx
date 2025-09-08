@@ -13,16 +13,18 @@ import { navigation } from "../constants/navigation";
 import { teams } from "../constants/teams";
 import { messages } from "../constants/messages";
 import ProjectBoard from "./ProjectBoard";
+import ProfileSettingsSection from "./ProfileSettingsSection";
 
-const user = JSON.parse(localStorage.getItem("user"));
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Layout({ children }) {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || {});
   const [lang, setLang] = useState("en");
   const [selectedPage, setSelectedPage] = useState("Dashboard");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
@@ -53,7 +55,7 @@ export default function Layout({ children }) {
         </div>
 
         {/* User profile */}
-        <UserProfileHero user={user} />
+        <UserProfileHero user={user} onProfileClick={() => setSelectedPage("Profile")} />
       </div>
 
       {/* Main content */}
@@ -68,6 +70,9 @@ export default function Layout({ children }) {
           {selectedPage === "Team" && <div>Team Content</div>}
           {selectedPage === "Projects" && (
             <div><ProjectBoard /></div>
+          )}
+          {selectedPage === "Profile" && (
+            <ProfileSettingsSection userInfo={user} setUser={setUser} setSelectedPage={setSelectedPage}/>
           )}
           {/* Add more as needed */}
           {children && (

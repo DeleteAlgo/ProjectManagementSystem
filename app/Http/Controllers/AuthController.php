@@ -70,6 +70,10 @@ class AuthController extends Controller
 
         $user->department = $department;
         $user->role = $role;
+
+        $user->profile_photo_path = $user->profile_photo_path
+        ? asset('storage/' . $user->profile_photo_path)
+        : null;
         
         return $user;
     }

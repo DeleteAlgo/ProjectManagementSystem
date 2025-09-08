@@ -31,5 +31,5 @@ Route::prefix('v1')
             Route::post('/roles', [RoleController::class, 'store']);
             Route::post('/boards', [BoardController::class, 'makeBoard']);
 
-            Route::patch('/users/{id}', [UserController::class, 'update']);
+            Route::post('/users/{id}', [UserController::class, 'update']);
 });

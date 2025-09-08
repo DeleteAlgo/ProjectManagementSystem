@@ -31,6 +31,9 @@ class UserController extends Controller
             'age' => 'required|integer|min:0',
             'department_id' => 'required|exists:departments,id',
             'role_id' => 'required|exists:roles,id',
+            'bio' => 'nullable|string|max:500',
+            'profile_photo_path' => 'nullable|string|max:2048',
+            'location' => 'nullable|string|max:255',
         ]);
         $validated['password'] = Hash::make($validated['password']);
         
@@ -41,32 +44,33 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-        if(!$user && $id == auth()->id()){
-           autg()->logout();
-           return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
-        $validator = $request->validate([
-            'first_name' => 'sometimes|required|string|max:255',
-            'last_name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:users',
-            'password' => 'sometimes|required|string|min:8',
-            'role_id' => 'sometimes|required|exists:roles,id',
-            'date_of_birth' => 'sometimes|required|date',
-            'address' => 'sometimes|required|string|max:500',
-            'phone' => 'sometimes|required|string|max:20',
-            'age' => 'sometimes|required|integer|min:0',
-            'department_id' => 'sometimes|required|exists:departments,id',
+        $request->validate([
+            'first_name'    => 'sometimes|required|string|max:255',
+            'last_name'     => 'sometimes|required|string|max:255',
+            'email'         => 'sometimes|required|email',
+            'bio'           => 'sometimes|nullable|string',
+            'phone'         => 'sometimes|nullable|string',
+            'location'      => 'sometimes|nullable|string',
+            'profile_photo' => 'sometimes|nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
-        if($request->has('password')){
-            $request->merge(['password' => Hash::make($request->password)]);
+        $user = User::findOrFail($id);
+
+        if ($request->hasFile('profile_photo')) {
+            $path = $request->file('profile_photo')->store('profile_photos', 'public');
+            $user->profile_photo_path = $path;
         }
 
-        $user->update($request->all());
+        // Only update fields if present in the request
+        foreach (['first_name', 'last_name', 'email', 'bio', 'phone', 'location'] as $field) {
+            if ($request->has($field)) {
+                $user->$field = $request->input($field);
+            }
+        }
 
-        return new UserResource($user);
+        $user->save();
+
+        return response()->json(['message' => 'Profile updated!', 'user' => $this->userMapped($user)]);
     }
 
     public function userMapped($user)
@@ -76,6 +80,10 @@ class UserController extends Controller
 
         $department = ['id' => $department->id, 'name' => $department->name];
         $role = ['id' => $role->id, 'name' => $role->name];
+
+        $user->profile_photo_path = $user->profile_photo_path
+        ? asset('storage/' . $user->profile_photo_path)
+        : null;
 
         return response()->json([
             'id' => $user->id,
@@ -88,6 +96,9 @@ class UserController extends Controller
             'date_of_birth' => $user->date_of_birth,
             'department' => $department,
             'role' => $role,
+            'bio' => $user->bio,
+            'profile_photo_path' => $user->profile_photo_path,
+            'location' => $user->location,
         ]);
     }
 }

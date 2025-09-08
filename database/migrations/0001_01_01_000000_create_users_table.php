@@ -28,6 +28,8 @@ return new class extends Migration
             $table->boolean('is_online')->default(false);
             $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
             $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
+            $table->string('bio', 500)->nullable();
+            $table->string('location')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
