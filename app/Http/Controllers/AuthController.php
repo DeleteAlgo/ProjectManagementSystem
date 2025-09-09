@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Department;
 use App\Models\Role;
+use App\Models\Permission;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,15 +67,30 @@ class AuthController extends Controller
     {
         $department = Department::find($user->department_id);
         $role = Role::find($user->role_id);
-        unset($user->department_id, $user->role_id, $user->password, $user->remember_token);
+        $permissions = Role::with('permissions')->find($user->role_id)?->permissions;
 
+        // Assign before unsetting role_id
         $user->department = $department;
+        $user->permissions = $permissions;
         $user->role = $role;
 
+        unset($user->department_id, $user->role_id, $user->password, $user->remember_token);
+
         $user->profile_photo_path = $user->profile_photo_path
-        ? asset('storage/' . $user->profile_photo_path)
-        : null;
-        
+            ? asset('storage/' . $user->profile_photo_path)
+            : null;
+
         return $user;
+    }
+
+    public function getRolePermissions($roleId)
+    {
+        $role = Role::with('permissions')->findOrFail($roleId);
+        return response()->json([
+            'role' => $role->name,
+            'display_name' => $role->display_name,
+            'description' => $role->description,
+            'permissions' => $role->permissions
+        ]);
     }
 }
