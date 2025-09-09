@@ -83,7 +83,7 @@ class UserController extends Controller
 
         $user->profile_photo_path = $user->profile_photo_path
         ? asset('storage/' . $user->profile_photo_path)
-        : null;
+        :  asset('storage/' . 'profile_photos/h1inrPlkDuME4KT1NhXaaGAbz8BX6Mju6ryjehrI.jpg');
 
         return response()->json([
             'id' => $user->id,
@@ -99,6 +99,60 @@ class UserController extends Controller
             'bio' => $user->bio,
             'profile_photo_path' => $user->profile_photo_path,
             'location' => $user->location,
+        ]);
+    }
+
+    public function teamMemberMapped($user)
+    {
+        $department = Department::find($user->department_id);
+        $role = Role::find($user->role_id);
+
+        $department = ['id' => $department->id, 'name' => $department->name];
+        $role = ['id' => $role->id, 'name' => $role->name];
+
+        $user->profile_photo_path = $user->profile_photo_path
+        ? asset('storage/' . $user->profile_photo_path)
+        : asset('storage/' . 'profile_photos/h1inrPlkDuME4KT1NhXaaGAbz8BX6Mju6ryjehrI.jpg');
+
+        unset($user->department_id, $user->role_id, $user->password, $user->remember_token);
+
+        return [
+            'id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'full_name' => $user->first_name . ' ' . $user->last_name,
+            'email' => $user->email,
+            'age' => $user->age,
+            'phone' => $user->phone,
+            'address' => $user->address,
+            'date_of_birth' => $user->date_of_birth,
+            'department' => $department,
+            'role' => $role,
+            'bio' => $user->bio,
+            'profile_photo_path' => $user->profile_photo_path,
+            'location' => $user->location,
+        ];
+    }
+
+    public function getTeamMembers($user_id)
+    {
+        $user = User::findOrFail($user_id);
+        $department_id = $user->department_id;
+        $teamMembers = User::where('department_id', $department_id)
+            ->get();
+        $mapped_teamMembers = [];
+        $manager = User::find(Department::find($department_id)->manager_id);
+        $manager = $this->teamMemberMapped($manager);
+        
+        foreach ($teamMembers as $member) {
+            if($member->id !== $manager['id']) {
+                array_push($mapped_teamMembers, $this->teamMemberMapped($member));
+            }
+        }
+        
+        return response()->json([
+            'team_members' => $mapped_teamMembers,
+            'manager' => $manager
         ]);
     }
 }

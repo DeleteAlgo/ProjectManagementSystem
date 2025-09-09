@@ -14,6 +14,7 @@ import { teams } from "../constants/teams";
 import { messages } from "../constants/messages";
 import ProjectBoard from "./ProjectBoard";
 import ProfileSettingsSection from "./ProfileSettingsSection";
+import TeamContent from "./TeamContent";
 
 
 function classNames(...classes) {
@@ -67,7 +68,7 @@ export default function Layout({ children }) {
               <DashboardUpcomingTips translate={translate} />
             </div>
           )}
-          {selectedPage === "Team" && <div>Team Content</div>}
+          {selectedPage === "Team" && <TeamContent />}
           {selectedPage === "Projects" && (
             <div><ProjectBoard /></div>
           )}

@@ -24,6 +24,7 @@ Route::prefix('v1')
             Route::get('/roles', [RoleController::class, 'index']);
             Route::get('/boards', [BoardController::class, 'index']);
             Route::get('/checkuser', [AuthController::class, 'checkUser']);
+            Route::get('/users/{user_id}/team_members', [UserController::class, 'getTeamMembers']);
 
             Route::post('/users', [UserController::class, 'store']);
             Route::post('/logout/{id}', [AuthController::class, 'logout']);
@@ -32,4 +33,5 @@ Route::prefix('v1')
             Route::post('/boards', [BoardController::class, 'makeBoard']);
 
             Route::post('/users/{id}', [UserController::class, 'update']);
+            
 });
